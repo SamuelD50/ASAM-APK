@@ -29,7 +29,7 @@ class ActivityPageState extends State<ActivityPage> {
         pricings: [
           Pricing(profile: 'Adulte', pricing: '65'),
         ],
-        place: Place(title: 'Permanence ASAM', streetAddress: '60 avenue de Cessart', postalCode: '50100', city: 'CHERBOURG-EN-COTENTIN'),
+        place: Place(title: 'Permanence ASAM', streetAddress: '60 avenue de Cessart', postalCode: '50100', city: 'CHERBOURG-EN-COTENTIN', latitude: 49.644553345495744, longitude: -1.6320111926261516),
         information: 'Chansons françaises et internationales',
         /* imageUrl: 'https://asamcherbourg.fr/media/02d5f1cbce69bb3d88ddb9bd100f168d.jpg' */
       ),
@@ -44,7 +44,7 @@ class ActivityPageState extends State<ActivityPage> {
           Pricing(profile: 'Seul', pricing: '78'),
           Pricing(profile: 'Couple', pricing: '134'),
         ],
-        place: Place(title: 'Porte des 3 Hangars', streetAddress: 'La Saline', postalCode: '50120', city: 'CHERBOURG-EN-COTENTIN'),
+        place: Place(title: 'Porte des 3 Hangars', streetAddress: 'La Saline', postalCode: '50120', city: 'CHERBOURG-EN-COTENTIN', latitude: 49.65193866089969 , longitude: -1.645161282885916 ),
         information: 'Débutants, novices et confirmés',
         /* imageUrl: 'https://asamcherbourg.fr/media/02d5f1cbce69bb3d88ddb9bd100f168d.jpg' */
       ),

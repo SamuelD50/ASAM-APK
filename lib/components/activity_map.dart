@@ -9,6 +9,7 @@ class MapCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
+      mapController: MapController(),
       options: MapOptions(
         initialCenter: LatLng(49.61443010609209, -1.5994695422704903), // Center the map over London
         initialZoom: 10,
@@ -26,6 +27,26 @@ class MapCard extends StatelessWidget {
               onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')), // (external)
             ),
             // Also add images...
+          ],
+        ),
+        MarkerLayer(
+          markers:[
+            Marker(
+              point: LatLng(49.64454798720042, -1.632001914435552),
+              width: 80,
+              height: 80,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/icons/Localisation.png', height: 40),
+                  SizedBox(height: 5),
+                  Text(
+                    'Permanence ASAM',
+                    style: TextStyle(fontSize: 12),
+                  )
+                ]
+              )
+            ),
           ],
         ),
       ],

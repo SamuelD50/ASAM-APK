@@ -19,11 +19,19 @@ class ActivityModel {
 
 class Schedule {
   final String day;
-  final String startHour;
-  final String endHour;
+  final List<TimeSlot> timeSlots;
 
   Schedule({
     required this.day,
+    required this.timeSlots,
+  });
+}
+
+class TimeSlot {
+  final String startHour;
+  final String endHour;
+
+  TimeSlot({
     required this.startHour,
     required this.endHour,
   });
@@ -45,6 +53,8 @@ class Place {
   final String streetAddress;
   final String postalCode;
   final String city;
+  final double latitude;
+  final double longitude;
 
 
   Place({
@@ -52,6 +62,8 @@ class Place {
     required this.streetAddress,
     required this.postalCode,
     required this.city,
+    required this.latitude,
+    required this.longitude,
   });
 }
 
