@@ -11,9 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_map: ^7.0.2
+  flutter_map_cancellable_tile_provider: ^3.0.2
   latlong2: ^0.9.1
   url_launcher: ^6.0.20
   http: ^1.2.2
+  mailer: ^6.2.0
+  flutter_dotenv: ^5.2.1
 
   cupertino_icons: ^1.0.8
   google_maps_flutter: ^2.9.0
@@ -36,3 +39,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icons/
+    - assets/images/Octo_Loupe.png
+    - .env

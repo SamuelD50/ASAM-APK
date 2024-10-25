@@ -37,8 +37,11 @@ class ActivityCard extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text('Lieu: ${activity.place.title}'),
                 const Text('Horaires: '),
-                for (var schedule in activity.schedules)
-                  Text('${schedule.day}, ${schedule.startHour} - ${schedule.endHour}'),
+                for (var schedule in activity.schedules) ...[
+                  Text('${schedule.day}:'),
+                  for (var timeSlot in schedule.timeSlots)
+                    Text(' ${timeSlot.startHour} - ${timeSlot.endHour}'),
+                ],
                 const Text('Prix: '),
                 for (var pricing in activity.pricings)
                   Text('${pricing.profile} : ${pricing.pricing}€'),

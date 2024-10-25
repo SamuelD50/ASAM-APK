@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:asam_apk/model/activity_model.dart';
 import 'package:asam_apk/components/activity_card.dart';
 import 'package:asam_apk/components/activity_map.dart';
@@ -19,37 +21,16 @@ class ActivityPageState extends State<ActivityPage> {
     _loadActivities();
   }
 
-  void _loadActivities() {
-    activities = [
-      ActivityModel(
-        discipline: 'Chant',
-        schedules: [
-          Schedule(day: 'Mercredi', startHour: '14H', endHour: '18h'),
-        ],
-        pricings: [
-          Pricing(profile: 'Adulte', pricing: '65'),
-        ],
-        place: Place(title: 'Permanence ASAM', streetAddress: '60 avenue de Cessart', postalCode: '50100', city: 'CHERBOURG-EN-COTENTIN', latitude: 49.644553345495744, longitude: -1.6320111926261516),
-        information: 'Chansons françaises et internationales',
-        /* imageUrl: 'https://asamcherbourg.fr/media/02d5f1cbce69bb3d88ddb9bd100f168d.jpg' */
-      ),
-      ActivityModel(
-        discipline: 'Danse country',
-        schedules: [
-          Schedule(day: 'Mercredi', startHour: '19H', endHour: '20H'),
-          Schedule(day: 'Mercredi', startHour: '20H', endHour: '21H'),
-          Schedule(day: 'Mercredi', startHour: '21H', endHour: '22H'),
-        ],
-        pricings: [
-          Pricing(profile: 'Seul', pricing: '78'),
-          Pricing(profile: 'Couple', pricing: '134'),
-        ],
-        place: Place(title: 'Porte des 3 Hangars', streetAddress: 'La Saline', postalCode: '50120', city: 'CHERBOURG-EN-COTENTIN', latitude: 49.65193866089969 , longitude: -1.645161282885916 ),
-        information: 'Débutants, novices et confirmés',
-        /* imageUrl: 'https://asamcherbourg.fr/media/02d5f1cbce69bb3d88ddb9bd100f168d.jpg' */
-      ),
-    ];
-    setState((){});
+  Future<void> _loadActivities() async {
+    final response = await http.get(Uri.parse('https://raw.githubusercontent.com/SamuelD50/ASAM-APK/refs/heads/main/db.json'));
+
+    if(response.statusCode == 200) {
+      List<dynamic> jsonData = jsonDecode(response.body);
+      activities = jsonData.map((activity) => ActivityModel.fromJson(activity)).toList();
+      setState(() {});
+    } else {
+      throw Exception('Failed to load activities');
+    }
   }
 
   @override
@@ -60,7 +41,7 @@ class ActivityPageState extends State<ActivityPage> {
         children: [
           SizedBox(
             height: 300,
-            child: MapCard(),
+            child: MapCard(activities: activities),
           ),
           Expanded(
             child: ListView.builder(

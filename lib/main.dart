@@ -1,76 +1,105 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
-import 'pages/activity_page.dart';
 import 'pages/auth_page.dart';
+import 'pages/contact_page.dart';
 
-void main() => runApp(const NavigationBarApp());
+void main() => runApp(const App());
 
-class NavigationBarApp extends StatelessWidget {
-  const NavigationBarApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true),
-      home: const NavigationExample(),
+      home: const MainPage(),
     );
   }
 }
 
-class NavigationExample extends StatefulWidget {
-  const NavigationExample({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<NavigationExample> createState() => _NavigationExampleState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _NavigationExampleState extends State<NavigationExample> {
+class _MainPageState extends State<MainPage> {
   int currentPageIndex = 0;
+
+  final List<Widget> pages = const [
+    HomePage(),
+    AuthPage(),
+    ContactPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        indicatorColor: Colors.amber,
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_sharp),
-            label: 'Accueil',
+      appBar: AppBar(
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: AssetImage('assets/images/Octo_Loupe.png'),
+              radius: 20,
+            ),
+            const SizedBox(width: 10),
+            const Text(
+              'Octo\'Loupe',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+        backgroundColor: const Color(0xFF5B59B4),
+        toolbarHeight: 70,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            colors: [
+              Color(0xFF5D71FF),
+              Color(0xFFF365C7),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.sports_soccer_sharp),
-            label: 'Activités',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.account_circle_sharp),
-            label: 'Mon compte',
+        ),
+        child: pages[currentPageIndex],
+      ),
+      bottomNavigationBar: Container(
+        color: const Color(0xFF5B59B4),
+        height: 70,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildNavItem(Icons.home, 'Accueil', 0),
+            _buildNavItem(Icons.account_circle_sharp, 'Mon compte', 1),
+            _buildNavItem(Icons.mail_sharp, 'Contact', 2),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(IconData icon, String label, int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          currentPageIndex = index;
+        });
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: currentPageIndex == index ? const Color(0xFFF9BC50) : Colors.white),
+          Text(
+            label,
+            style: TextStyle(
+              color: currentPageIndex == index ? const Color(0xFFF9BC50) : Colors.white,
+            ),
           ),
         ],
       ),
-
-      
-      body: <Widget>[
-        /// Home page
-        HomePage(),
-       
-
-        /// Activity page
-        ActivityPage(),
-        
-
-        
-        /// Messages page
-        
-        AuthPage(),
-        
-      ][currentPageIndex],
     );
   }
 }

@@ -31,6 +31,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <uses-permission android:name="android.permission.INTERNET"/>
     </application>
     
     <!-- Required to query activities that can process text, see:
@@ -42,6 +44,10 @@
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
         </intent>
     </queries>
 </manifest>

@@ -2,37 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:asam_apk/model/activity_model.dart';
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 
 class MapCard extends StatelessWidget {
-  const MapCard({super.key});
+  const MapCard({super.key, required this.activities});
+
+  final List<ActivityModel> activities;
 
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
       mapController: MapController(),
       options: MapOptions(
-        initialCenter: LatLng(49.61443010609209, -1.5994695422704903), // Center the map over London
+        initialCenter: LatLng(49.61443010609209, -1.5994695422704903),
         initialZoom: 10,
       ),
       children: [
-        TileLayer( // Display map tiles from any source
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', // OSMF's Tile Server
+        TileLayer(
+          /* tileProvider: CancellableTileProvider(), */
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'com.example.app',
-          // And many more recommended properties!
         ),
-        RichAttributionWidget( // Include a stylish prebuilt attribution widget that meets all requirments
+        RichAttributionWidget(
           attributions: [
             TextSourceAttribution(
               'OpenStreetMap contributors',
-              onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')), // (external)
+              onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
             ),
-            // Also add images...
           ],
         ),
         MarkerLayer(
-          markers:[
-            Marker(
-              point: LatLng(49.64454798720042, -1.632001914435552),
+          markers: activities.map((activity) {
+            return Marker(
+              point: LatLng(activity.place.latitude, activity.place.longitude),
               width: 80,
               height: 80,
               child: Column(
@@ -41,13 +44,13 @@ class MapCard extends StatelessWidget {
                   Image.asset('assets/icons/Localisation.png', height: 40),
                   SizedBox(height: 5),
                   Text(
-                    'Permanence ASAM',
+                    activity.place.title,
                     style: TextStyle(fontSize: 12),
-                  )
-                ]
-              )
-            ),
-          ],
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
         ),
       ],
     );
