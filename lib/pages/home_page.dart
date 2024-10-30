@@ -1,101 +1,134 @@
+import 'package:asam_apk/components/custom_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'categories_page.dart';
-import 'age_selection_page.dart';
-import 'day_selection_page.dart';
-import 'time_selection_page.dart';
-import 'sector_selection_page.dart';
+import 'category_selection_page.dart';
 
-
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  HomePageState createState() => HomePageState();
+}
+
+class HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+  
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              'Je trouve mon activité',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.amber,
+    return Scaffold(
+      appBar: const CustomAppBar(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            colors: [
+              Color(0xFF5D71FF),
+              Color(0xFFF365C7),
+            ],
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                'Je trouve mon activité',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.amber,
+                ),
               ),
             ),
-          ),
-          // Barre de recherche
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Je recherche ...',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.search),
-              ),
-            ),
-          ),
-          // Critères de sélection
-          Expanded(
-            child: ListView(
+            // Barre de recherche
+            Padding(
               padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Je recherche ...',
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.search),
+                ),
+                onSubmitted: (value) {
+                  debugPrint(value);
+                },
+              ),
+            ),
+            ToggleButtons(
+              isSelected: [_selectedIndex == 0, _selectedIndex == 1],
+              onPressed: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              color: Colors.black,
+              selectedColor: Colors.white,
+              fillColor: Color(0xFF5B59B4),
+              borderColor: Color(0xFF5B59B4), // Suppression des bordures par défaut
+              selectedBorderColor: Color(0xFF5B59B4),
+              borderRadius: BorderRadius.circular(20.0), // Arrondir les coins
               children: [
-                _buildCriteriaTile(context, Icons.category, 'Par Catégorie', CategoriesPage()),
-                _buildCriteriaTile(context, Icons.accessibility, 'Par Âge', AgeSelectionPage()),
-                _buildCriteriaTile(context, Icons.calendar_today, 'Selon le Jour', DaySelectionPage()),
-                _buildCriteriaTile(context, Icons.access_time, 'Selon l\'Horaire', TimeSelectionPage()),
-                _buildCriteriaTile(context, Icons.business, 'Par Secteur', SectorSelectionPage()),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 1.0),
+                  child: Center(child: Text('Sport')),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 1.0),
+                  child: Center(child: Text('Culture')),
+                ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () {
-                debugPrint("Bouton rechercher");
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                textStyle: TextStyle(fontSize: 18),
-              ),
-              child: Text('Rechercher'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-    // Widget pour créer une ligne de critère avec une icône encerclée
-  Widget _buildCriteriaTile(BuildContext context, IconData icon, String label, Widget page) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => page),
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0), // Ajout d'un padding vertical
-        child: Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF5B59B4), // Couleur de fond de l'icône
-              ),
-              padding: EdgeInsets.all(12), // Padding pour agrandir le cercle
-              child: Icon(icon, color: Colors.white), // Icône à l'intérieur du cercle
-            ),
-            SizedBox(width: 40), // Espace entre l'icône et le texte
+            // Critères de sélection
             Expanded(
-              child: Text(
-                label,
-                style: TextStyle(color: Colors.black, fontSize: 18), // Style du texte
+              child: ListView(
+                padding: const EdgeInsets.all(16.0),
+                children: [
+                  _buildCriteriaTile(
+                    context,
+                    Icons.category,
+                    'Par catégorie',
+                    CategoriesPage(),
+                  ),
+                  _buildCriteriaTile(
+                    context,
+                    Icons.accessibility_new,
+                    'Par âge',
+                    CategoriesPage(),
+                  ),
+                  _buildCriteriaTile(
+                    context,
+                    Icons.date_range,
+                    'Par jour',
+                    CategoriesPage(),
+                  ),
+                  _buildCriteriaTile(
+                    context,
+                    Icons.access_time,
+                    'Par horaire',
+                    CategoriesPage(),
+                  ),
+                  _buildCriteriaTile(
+                    context,
+                    Icons.apartment_rounded,
+                    'Par secteur',
+                    CategoriesPage(),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ElevatedButton(
+                onPressed: () {
+                  debugPrint("Bouton rechercher");
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  textStyle: TextStyle(fontSize: 18),
+                ),
+                child: Text('Rechercher'),
               ),
             ),
           ],
@@ -103,4 +136,38 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildCriteriaTile(BuildContext context, IconData icon, String label, Widget page) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context, 
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFF5B59B4),
+              ),
+              padding: EdgeInsets.all(8),
+              child: Icon(icon, color: Colors.white),
+            ),
+            SizedBox(width: 20),
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(color: Colors.black, fontSize: 18),
+              ), 
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
+

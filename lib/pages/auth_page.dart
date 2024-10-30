@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../components/custom_app_bar.dart';
+
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -22,13 +24,20 @@ class AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent, // Assure-toi que la couleur de fond est transparente
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent, // Pour rendre le fond du Scaffold transparent
-        body: Padding(
+    return Scaffold(
+      appBar: const CustomAppBar(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            colors: [
+              Color(0xFF5D71FF),
+              Color(0xFFF365C7),
+            ],
+          ),
+        ), 
+        child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
